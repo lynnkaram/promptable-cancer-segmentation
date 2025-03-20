@@ -8,4 +8,4 @@ The following figure describes how the framework works.
 
 ![Human interacts with computer](https://github.com/user-attachments/assets/df05960a-722b-47ee-be42-0744f3bf7890)
 
-Use the split_data code to split your data into training, testing and validating datasets. Then, use the latter to train the weakly-supervised object presence classifier, and save the weights. Upload those weights into the click_prompt_app if you want to manually prompt on the image and visualise it, or use the click_prompt_automatic if you want automatic prompting through the dataset. 
+Use the split_data.py code to split your data into training, testing and validating datasets. Then, use the latter to train the weakly-supervised object presence classifier on the weak_classifier.py code, and save the weights. Upload those weights into the click_prompt_app.py if you want to manually prompt on the image and visualise it, or use the click_prompt_auto.py if you want automatic prompting through the dataset. 
