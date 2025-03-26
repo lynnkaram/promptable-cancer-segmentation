@@ -212,47 +212,44 @@ class CancerDetectionApp(QMainWindow):
 
         self.display_image()
 
-    def display_image(self):
+def display_image(self):
         if self.nifti_image is None:
             return
-    
+          
         self.figure.clear()
         ax = self.figure.add_subplot(111)
     
-        # Display original image 
+        # Display original image
         ax.imshow(self.nifti_image[:, :, self.current_slice], cmap='gray')
     
-        # Show lesion mask with a thicker blue line
+        # Show lesion mask with a thick blue line
         if self.lesion_mask is not None:
             lesion_slice = self.lesion_mask[:, :, self.current_slice]
             if np.any(lesion_slice > 0):
                 ax.contour(lesion_slice, levels=[0.5], colors='blue', linewidths=3)
     
-        # Show detection results using semi-transparent red overlay
-        if self.cancer_regions:
-            for region in self.cancer_regions:
-                x, y = region[0], region[1]
-                box_size = 10
-                rect = patches.Rectangle(
-                    (y, x), box_size, box_size, linewidth=1,
-                    edgecolor='red', facecolor='red', alpha=0.4  # Adjust transparency here
-                )
-                ax.add_patch(rect)
+        # Create a blank prediction mask
+        prediction_mask = np.zeros_like(self.nifti_image[:, :, self.current_slice], dtype=np.uint8)
+    
+        # Fill prediction mask based on cancer regions
+        box_size = 10
+        for region in self.cancer_regions:
+            x, y, z = region
+            if z == self.current_slice:
+                prediction_mask[x:x+box_size, y:y+box_size] = 1
+    
+        # Display single red lesion mask 
+        if np.any(prediction_mask):
+            ax.contourf(prediction_mask, levels=[0.5, 1], colors='red', alpha=0.4)
     
             if self.lesion_mask is not None:
-                # Create binary mask for overlap calculation
-                mask = np.zeros_like(self.nifti_image[:, :, self.current_slice])
-                for region in self.cancer_regions:
-                    x, y = region[0], region[1]
-                    mask[x:x+10, y:y+10] = 1
-    
                 lesion_slice = self.lesion_mask[:, :, self.current_slice]
-                intersection = np.sum(np.logical_and(mask > 0, lesion_slice > 0))
-                union = np.sum(np.logical_or(mask > 0, lesion_slice > 0))
+                intersection = np.sum(np.logical_and(prediction_mask, lesion_slice > 0))
+                union = np.sum(np.logical_or(prediction_mask, lesion_slice > 0))
                 if union > 0:
                     overlap_percentage = (intersection / union) * 100
                     ax.text(10, 20, f'Overlap: {overlap_percentage:.1f}%', 
-                           color='white', fontsize=12, bbox=dict(facecolor='black', alpha=0.7))
+                            color='white', fontsize=12, bbox=dict(facecolor='black', alpha=0.7))
     
         self.canvas.draw()
         self.slice_label.setText(f'Current Slice: {self.current_slice}')
