@@ -6,7 +6,6 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model  
 
 def calculate_dice_score(prediction_mask, ground_truth_mask):
-    """Calculate Dice similarity coefficient."""  
     intersection = np.sum(prediction_mask * ground_truth_mask)  
     union = np.sum(prediction_mask) + np.sum(ground_truth_mask)  
     if union == 0:  
@@ -20,7 +19,6 @@ def find_best_slice(lesion_data):
     return np.argmax(slice_sums)  # Return index of slice with largest sum
 
 def find_click_point(lesion_mask_slice):
-    """Find a good point to click within the lesion mask."""
     if lesion_mask_slice is None or not np.any(lesion_mask_slice > 0):  # Check if mask is empty
         return None
     # Label connected components = regions of pixels that are touching each other in the binary mask
@@ -120,7 +118,6 @@ class CropEnvironment:
 
 
 def process_single_image(image_path):
-    """Process a single image and return its Dice score."""
     nifti_img = nib.load(image_path)
     nifti_image = nifti_img.get_fdata() 
     mask_path = os.path.join(os.path.dirname(image_path), 'l_a1.nii.gz')
