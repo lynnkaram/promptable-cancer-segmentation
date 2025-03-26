@@ -5,7 +5,7 @@ import shutil
 from sklearn.model_selection import train_test_split
 
 def split_data_into_folders(main_directory, output_directory):
-    """Splits data into training (50%), validation (20%), and test (30%) sets."""
+    # Split data into training (50%), validation (20%), and test (30%) sets
     
     subfolders = [f for f in os.listdir(main_directory) if os.path.isdir(os.path.join(main_directory, f))]
     
@@ -40,7 +40,7 @@ def split_data_into_folders(main_directory, output_directory):
     print(f"Validation: {len(val_subfolders)} subfolders")
     print(f"Test: {len(test_subfolders)} subfolders")
 
-# Example usage of the function
+# Example usage of the function on my desktop
 main_data_path = os.path.expanduser("/Users/lynnkaram/Desktop/all_images_copy")
 output_data_path = os.path.expanduser("~/Desktop/split_data")
 split_data_into_folders(main_data_path, output_data_path)
