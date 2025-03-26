@@ -8,7 +8,7 @@ import tensorflow as tf
 from tensorflow.keras import layers, models
 
 def classify_subfolders(main_directory):
-    """Classify subfolders based on the presence of l_a1.nii.gz file."""
+    # Classify subfolders based on the presence of l_a1.nii.gz file
     classifications = {}  # Dictionary to store classifications
     for subfolder in os.listdir(main_directory):
         subfolder_path = os.path.join(main_directory, subfolder)
@@ -18,13 +18,13 @@ def classify_subfolders(main_directory):
     return classifications
 
 def normalize_mri_zscore(volume):
-    """Normalize the volume using Z-score normalization."""
+    # Normalize the volume using Z-score normalization
     mean = np.mean(volume)
     std = np.std(volume)
     return ((volume - mean) / std).astype("float32")
 
 def resize_volume(img):
-    """Resize across z-axis to (16, 256, 256)."""
+    # Resize across z-axis to (16, 256, 256)
     depth_factor = 16 / img.shape[-1]
     width_factor = 256 / img.shape[0]
     height_factor = 256 / img.shape[1]
@@ -32,7 +32,7 @@ def resize_volume(img):
     return ndimage.zoom(img, (width_factor, height_factor, depth_factor), order=1)
 
 def load_and_preprocess_data(main_directory):
-    """Load and preprocess images from the train, validation, and test sets."""
+    # Load and preprocess images from the train, validation, and test sets
     data, labels, subfolder_names = [], [], []
     classifications = classify_subfolders(main_directory)  # Get classifications for all subfolders
 
@@ -45,7 +45,7 @@ def load_and_preprocess_data(main_directory):
             try:
                 image = nib.load(image_path).get_fdata()
                 image = normalize_mri_zscore(image)
-                processed_image = resize_volume(image) #crop the image here randomly
+                processed_image = resize_volume(image) # Crop the image here randomly
                 data.append(processed_image)
                 labels.append(label)
                 subfolder_names.append(subfolder)
@@ -57,7 +57,6 @@ def load_and_preprocess_data(main_directory):
     return data, labels, subfolder_names
 
 def train_and_save_model(main_directory):
-    """Train the CNN model on train, validate using validation set, and save the model periodically."""
     # Load data for train, validation, and test
     train_dir = os.path.join(main_directory, 'train')
     val_dir = os.path.join(main_directory, 'validation')
@@ -71,7 +70,7 @@ def train_and_save_model(main_directory):
     train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train)).batch(16)
     val_dataset = tf.data.Dataset.from_tensor_slices((X_val, y_val)).batch(16)
 
-    # Build a simple Convolutional Neural Network (CNN)
+    # Build a Convolutional Neural Network (CNN)
     model = models.Sequential([
         layers.Input(shape=(16, 256, 256, 1)),
         layers.Conv3D(16, (3, 3, 3), activation='relu', padding='same'),
@@ -96,7 +95,7 @@ def train_and_save_model(main_directory):
         print(f"\nEpoch {epoch + 1}/{epochs}")
         model.fit(train_dataset, validation_data=val_dataset, epochs=1)
 
-        # Save the model periodically
+        # Save the model periodically to my desktop
         if (epoch + 1) in save_epochs:
             model_save_path = os.path.expanduser(f"~/Desktop/saved_models/model_epoch_{epoch + 1}.keras")
             os.makedirs(os.path.dirname(model_save_path), exist_ok=True)
@@ -122,6 +121,6 @@ def train_and_save_model(main_directory):
         true_label = int(np.mean(values["true_labels"]))  # Since all true labels should be the same, take the average
         print(f"Subfolder: {subfolder}, True Label: {true_label}, Predicted Label: {predicted_label}")
 
-# Example usage of the function
+# Example usage of the function on my desktop
 split_data_path = os.path.expanduser("/Users/lynnkaram/Desktop/split_data")
 train_and_save_model(split_data_path)
