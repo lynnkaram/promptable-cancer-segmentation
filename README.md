@@ -3,6 +3,7 @@
 Please cite as below: 
 
 Lynn Karam, Yipei Wang, Veeru Kasivisvanathan, Mirabela Rusu, Yipeng Hu, and Shaheer U. Saeed. Promptable Cancer Segmentation Using Minimal Expert-Curated Data. Medical Image Understanding and Analysis (MIUA), 2025.
+DOI: https://doi.org/10.48550/arXiv.2505.17915
 
 # Promptable cancer segmentation using minimal expert-curated data
 
