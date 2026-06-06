@@ -1,3 +1,9 @@
+# Citation
+
+Please cite as below: 
+
+Lynn Karam, Yipei Wang, Veeru Kasivisvanathan, Mirabela Rusu, Yipeng Hu, and Shaheer U. Saeed. Promptable Cancer Segmentation Using Minimal Expert-Curated Data. Medical Image Understanding and Analysis (MIUA), 2025.
+
 # Promptable cancer segmentation using minimal expert-curated data
 
 Current segmentation models have shown promising results in the medical field, however prostate cancer segmentation specifically remains a challenge. This repository contains codes for a project which integrates two classifiers, one weakly-supervised and one fully-supervised classifier, for segmentating prostate cancer in T2-weighted MRI scans. 
