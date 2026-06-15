@@ -13,9 +13,9 @@ Here is a segmentation method that combines classification and user-defined prom
 
 The following figure describes how the framework works. 
 
+<img width="732" height="507" alt="Screenshot 2026-06-15 at 3 57 43 PM" src="https://github.com/user-attachments/assets/bcda69c3-f452-4808-9d47-c23264212760" />
 
-<img width="477" alt="Screenshot 2025-03-20 at 3 20 01 PM" src="https://github.com/user-attachments/assets/ed74db0c-af7d-404e-a7f2-98ebf6bd4e96" />
-
+<img width="697" height="327" alt="Screenshot 2026-06-15 at 3 58 43 PM" src="https://github.com/user-attachments/assets/cfbe7075-4197-4acc-9a50-080073b5c586" />
 
 
 Use the split_data.py code to split your data into training, testing and validating datasets. Then, use the latter to train the weakly-supervised object presence classifier on the weak_classifier.py code, and save the weights. Upload those weights into the click_prompt_app.py if you want to manually prompt on the image and visualise it, or use the click_prompt_auto.py if you want automatic prompting through the dataset. 
